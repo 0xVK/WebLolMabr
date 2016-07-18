@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+{{ Article.title }} | Weblolmabr
+
+{% endblock %}
+
+
+{% block content %}
+	<h2>{{ Article.title }} </h2>
+    <hr>
+    <p>{{ Article.text }} </p>
+
+    <hr>
+    <i><b> Опубліковав: {{ Article.author }}, </b></i> {{ Article.pub_date|date:"d-m-Y"  }}
+    {% if is_author %} <a href= {% url 'del_view' a_id=Article.id %}> <i>(Видалити)</i> </a> {% endif %} <br>
+    Рейтинг: [{{ Article.rating }}] {% if user.is_authenticated %} <a href= {% url 'like_view' a_id=Article.id %} >[+]</a> {% endif %}
+    <hr>
+
+    <hr color="green" size="4">
+    <h3>Коментарії: </h3>
+    {% for comment in com_list %}
+    <hr>
+    <i><b>{{ comment.author }}:</b></i> {{ comment.text }} <br> {{ comment.pub_date  }}
+    <hr>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+    <i>Написати коментарій:</i>
+    <form method="post" action="">
+        {% csrf_token %}
+        <textarea name="comment"></textarea>
+        <input type="submit" value="Відправити">
+    </form>
+    {% endif %}
+
+
+{% endblock %}
+

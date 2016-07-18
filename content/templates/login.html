@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+WebLolMarb | Вхід
+{% endblock %}
+
+
+{% block content %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.username.label }}
+        {{ form.username }}
+        {{ form.password.label }}
+        {{ form.password }}
+        <input type="submit" value="Вхід">
+    </form>
+
+
+{% endblock %}
+

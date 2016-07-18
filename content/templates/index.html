@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+WebLolMarb | Головна сторінка
+{% endblock %}
+
+
+{% block content %}
+
+
+
+    <h2 align="center" style="color:#660066">Головна сторінка</h2>
+    Сортування
+    <form action="">
+        <select name="sort_by">
+            <option value="-pub_date" selected>Дата створення</option>
+            <option value="-rating">Рейтинг</option>
+        </select>
+        <input type="submit" value="ok">
+    </form>
+
+    <br><hr>
+    {% for article in Article %}
+    <h3><i><a href="post/{{ article.id }}">{{ article.title }}</a></i>
+    </br> Рейтинг: {{ article.rating }}
+    </br> Дата створення: {{ article.pub_date|date:"M d" }}
+
+    </h3> <br><br><hr>
+    {% endfor %}
+
+{% endblock %}
+

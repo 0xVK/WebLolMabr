@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Опублікувати статтю
+{% endblock %}
+
+
+{% block content %}
+    <br>
+    <form method="post" action="">
+    {% csrf_token %} {{ form.title.errors }}
+    {{ form.title.label }} {{ form.title }} <br><br>
+    {{ form.text.errors }}{{ form.text.label }} {{ form.text }} <br><br>
+    {% if user.is_authenticated %} <input type="submit" value="Відправити"> {% else %} Немає кнопки( {% endif %}
+    </form>
+ {% endblock %}
+
