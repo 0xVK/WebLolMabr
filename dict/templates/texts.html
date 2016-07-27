@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Тексти
+{% endblock %}
+
+
+{% block content %}
+    {% for text in texts %}
+    <a href={{ text.id }}>{{ text.title }} </a> <br>
+    {% endfor %}
+ {% endblock %}
+

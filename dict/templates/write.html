@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Набір тексту
+{% endblock %}
+
+
+{% block content %}
+	<form action="" method="post">
+        {% csrf_token %}
+        <input type='hidden' name='text_id' value={{ text_id }} />
+        <textarea name="text" cols="105" rows="25"></textarea><br><br>
+        <input type="submit">
+    </form>
+ {% endblock %}
+
