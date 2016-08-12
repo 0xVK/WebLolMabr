@@ -37,8 +37,16 @@ def solution(request, id):
     d = Dmp.diff_main(text2=sol.text.text, text1=sol.user_text)
     Dmp.diff_cleanupSemantic(d)
     r = Dmp.diff_prettyHtml(d)
-
     return render(request, template_name='solution.html', context={'rez': r})
+
+
+def solutions(request):
+
+    user = request.user
+    sols = Solution.objects.filter(author=user)
+
+    return render(request, template_name='solutions.html', context={'sols': sols})
+
 
 
 

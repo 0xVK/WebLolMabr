@@ -52,10 +52,11 @@
             {% if user.is_authenticated %}
                 <ul type="disc">
                     <li>Профіль</li>
-                    <li>Групи</li>
                     <li><a href= {% url 'add_view' %}> Опублікувати </a></li>
                     <li><a href={% url 'logout' %}>Вихід</a> </li>
                     <li><a href="/text/">Тексти</a> </li>
+                    <li><a href="/solutions/">Розвязки</a> </li>
+                    <li><a href="/groups/">Групи</a> </li>
                 </ul></div>
             {% endif %}
         </td>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Учасники групи {{ g.title }}
+{% endblock %}
+
+
+{% block content %}
+
+{% for member in members %}
+
+{{ member }} <br>
+
+{% endfor %}
+
+ {% endblock %}
+

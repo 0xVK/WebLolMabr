@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Розвязки
+{% endblock %}
+
+
+{% block content %}
+    {% for sol in sols %}
+    <a href={% url 'solution_view' id=sol.id %}> {{ sol.id }} {{ sol.text.title }}</a> <br>
+    {% endfor %}
+ {% endblock %}
+

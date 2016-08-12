@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Text(models.Model):
 
     title = models.CharField(max_length=255)
-    text = models.TextField(max_length=500)
+    text = models.TextField(max_length=5500)
     author = models.ForeignKey(User)
     audio = models.FileField(blank=True, null=True)
 

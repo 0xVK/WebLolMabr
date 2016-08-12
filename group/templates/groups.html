@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Групи
+{% endblock %}
+
+
+{% block content %}
+
+
+<h4><a href="create">Створити групу</a></h4>
+
+<table width="100%">
+    <tr>
+    <th><b>Всі групи:</b></th>
+    <th><b>Мої групи:</b></th>
+    <th><b>Запрошення:</b></th>
+    </tr>
+    <tr>
+        <td>
+       <ul>
+        {% for group in all_groups %}
+      <li><a href={{ group.id }}> {{ group.name }} </a></li>
+        {% endfor %}
+         </ul>
+        </td>
+        <td>
+            asd
+        </td>
+        <td>
+            <ul
+            {% if invites %}>
+                {% for invite in invites %}
+                <li><a href= {% url 'join_to_group' g_id=invite.group.id token=invite.token %} >{{ invite.group.name }}</a></li>
+                {% endfor %}
+            {% else %}    немає запрошень(  {% endif %}
+            </ul>
+        </td>
+    </tr>
+</table>
+
+
+ {% endblock %}
+
