@@ -3,7 +3,6 @@ from django.contrib.auth.models import Group, Permission, User
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from unidecode import unidecode
-from django.contrib.auth.decorators import login_required
 import random
 import string
 
@@ -24,6 +23,9 @@ class Invite(models.Model):
         self.token = ''.join(random.choice(string.ascii_uppercase +
                                            string.ascii_lowercase + string.digits) for x in range(6))
         super(Invite, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{} -> {}'.format(self.group.name, self.to_user.username)
 
 
 class Discussion(models.Model):

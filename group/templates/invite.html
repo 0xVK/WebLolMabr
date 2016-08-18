@@ -10,6 +10,9 @@
 
 <form method="post" action="">
     {% csrf_token %}
+    {% if inv_inf %}
+    {{ inv_inf }} <br><br>
+    {% endif %}
     {{ form.to_user.label }}: {{ form.to_user }}
     <input type="submit" value="Запросити">
 </form>

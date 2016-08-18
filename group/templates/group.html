@@ -10,7 +10,7 @@
 <h2> {{ g.name }} </h2> <hr>
 <h3><i> {{ g.description }} </i></h3>
 Адміністратор: {{ g.owner }} <br>
-<b>Usr:</b>  [<a href="members">учасники</a>] <br>
+<b>Usr:</b>  [<a href="members">учасники</a> / <a href="leave">вийти</a>] <br>
 {% if is_admin %}
  <b>Adm:</b> [<a href={% url 'invite' g_id=g.id %}>запросити</a> / <a href= {% url 'del_group' g_id=g.id %} > видалити</a>]
 {% endif %} <hr>

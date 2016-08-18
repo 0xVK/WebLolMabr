@@ -5,15 +5,18 @@ from group.forms import CreateGroupForm, InviteUserToGroupForm
 from group.models import GroupExt, Discussion, Invite
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import MultipleObjectsReturned
 import datetime
 
 
 def groups(request):
 
     all_groups = GroupExt.objects.all()
+    user_groups = request.user.groups.all()
+    # print(user_groups)
     invites = Invite.objects.filter(to_user=request.user)
 
-    data = {'all_groups': all_groups, 'invites': invites}
+    data = {'all_groups': all_groups, 'user_groups': user_groups, 'invites': invites}
     return render(request, template_name='groups.html', context=data)
 
 
@@ -97,20 +100,37 @@ def del_group(request, g_id):
 @login_required()
 def invite_to_group(request, g_id):
 
+    inv_inf = ''
+
     if request.method == 'POST':
 
         form = InviteUserToGroupForm(request.POST)
         if form.is_valid():
-            if form.cleaned_data.get('to_user') != request.user.username:
-                u = User.objects.get(username=form.cleaned_data.get('to_user'))
-                g = GroupExt.objects.get(id=g_id)
+            to_user = User.objects.get(username=form.cleaned_data.get('to_user'))
+            g = GroupExt.objects.get(id=g_id)
+            mems = User.objects.filter(groups=g)
 
-                print('to_user=', form.cleaned_data.get('to_user'), 'req.user=', request.user.username)
+            if to_user.username == request.user.username:  # сам себе
+                inv_inf += 'Нононо, себе ти не пригласиш!'
+                return render(request, template_name='invite.html', context={'form': form, 'inv_inf': inv_inf})
 
-                inv = Invite(to_user=u, group=g)
+            if to_user in mems:  # братіша вже в групі
+                inv_inf += 'Нононо, братіша вже в групі!'
+                return render(request, template_name='invite.html', context={'form': form, 'inv_inf': inv_inf})
+
+            try:  # вже скинуто
+                inv = Invite.objects.get(to_user=to_user, group=g)
+                inv_inf += 'Нононо, хватить. Раз скинув і всьо!'
+                return render(request, template_name='invite.html', context={'form': form, 'inv_inf': inv_inf})
+            except MultipleObjectsReturned:
+                inv_inf += 'Нононо, вже в чергі дофіга. Потерпи!'
+                return render(request, template_name='invite.html', context={'form': form, 'inv_inf': inv_inf})
+
+            except Invite.DoesNotExist:
+                inv = Invite.objects.create(to_user=to_user, group=g)
                 inv.save()
-
-                return HttpResponseRedirect('/groups/{}'.format(g.id))
+                inv_inf += 'Найс, відправлено!!'
+                return render(request, template_name='invite.html', context={'form': form, 'inv_inf': inv_inf})
 
     form = InviteUserToGroupForm()
 
@@ -121,11 +141,16 @@ def join_to_group(request, g_id, token):
 
     u = request.user
     g = GroupExt.objects.get(id=g_id)
+    inv = get_object_or_404(Invite, to_user=u, group=g, token=token)
 
-    if Invite.objects.get(to_user=u, group=g):
-        u.groups.add(g)
-        u.save()
-        Invite.objects.get(to_user=u, group=g).delete()
-        return HttpResponseRedirect('/groups/{}'.format(g_id))
+    u.groups.add(g)
+    u.save()
+    inv.delete()
+    return HttpResponseRedirect('/groups/{}'.format(g_id))
+
+
+def leave_group(request, g_id):
+    request.user.groups.remove(g_id)
+    return HttpResponseRedirect('/groups/')
 
 

@@ -26,7 +26,11 @@
          </ul>
         </td>
         <td>
-            asd
+         <ul>
+        {% for group in user_groups %}
+      <li><a href={{ group.id }}> {{ group.name }} </a></li>
+        {% endfor %}
+         </ul>
         </td>
         <td>
             <ul
