@@ -17,6 +17,9 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from content.views import about_page, IndexPage, LoginFormView, log_out, contact_page, thanks_page
 from dict.views import solution, solutions
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 urlpatterns = [
@@ -33,3 +36,6 @@ urlpatterns = [
     url(r'^solution/(?P<id>\d+)/$', solution, name='solution_view'),
     url(r'^solutions/$', solutions),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()

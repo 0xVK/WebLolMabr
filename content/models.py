@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.conf import settings
+from PIL import Image
 
 
 class Article(models.Model):

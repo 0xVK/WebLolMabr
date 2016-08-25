@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 
 {% block title %}
@@ -7,7 +8,9 @@
 
 
 {% block content %}
+
 	<h3 align="center">WebLolMabr</h3>
+    <img src= "{% static 'about_image.jpg' %}" width="757"/>
 	<i><h4 align="center">Site created on Django Framework, by KucheroV</h4></i>
 {% endblock %}
 

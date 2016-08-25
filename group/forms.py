@@ -6,7 +6,7 @@ class CreateGroupForm(ModelForm):
 
     class Meta:
         model = GroupExt
-        fields = ['name', 'description', ]
+        fields = ['name', 'description', 'avatar', ]
 
 
 class InviteUserToGroupForm(ModelForm):

@@ -9,6 +9,7 @@
 {% block content %}
 <h2> {{ g.name }} </h2> <hr>
 <h3><i> {{ g.description }} </i></h3>
+<img src="{{ g.avatar.url }}" alt="{{ g.name }}" width="200"><br>
 Адміністратор: {{ g.owner }} <br>
 <b>Usr:</b>  [<a href="members">учасники</a> / <a href="leave">вийти</a>] <br>
 {% if is_admin %}
