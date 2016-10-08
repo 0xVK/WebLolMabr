@@ -16,7 +16,7 @@
  <b>Adm:</b> [<a href={% url 'invite' g_id=g.id %}>запросити</a> / <a href= {% url 'del_group' g_id=g.id %} > видалити</a>]
 {% endif %} <hr>
 
-Обговорення<a href="new_topic">(new)</a>
+Обговорення<a href="new_topic">{% if is_admin %}(new){% endif %}</a>
 {% for d in dis %}
 <br><a href={{ d.slug }}> {{ d.title }} </a>
 {% endfor %}

@@ -8,7 +8,7 @@
 
 {% block content %}
     {% for sol in sols %}
-    <a href={% url 'solution_view' id=sol.id %}> {{ sol.id }} {{ sol.text.title }}</a> <br>
+    <a href={% url 'solution_view' id=sol.id %}> {{ sol.id }} {{ sol.text.title }} ({{ sol.author }})</a> <br>
     {% endfor %}
  {% endblock %}
 

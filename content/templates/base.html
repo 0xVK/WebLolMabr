@@ -51,7 +51,7 @@
             <div class="user_menu">
             {% if user.is_authenticated %}
                 <ul type="disc">
-                    <li>Профіль</li>
+                    <li><a href="/{{ user }}/">Профіль</a><a href="/{{ user }}/edit/"> (edit)</a></li>
                     <li><a href= {% url 'add_view' %}> Опублікувати </a></li>
                     <li><a href="/text/">Тексти</a> </li>
                     <li><a href="/solutions/">Розвязки</a> </li>

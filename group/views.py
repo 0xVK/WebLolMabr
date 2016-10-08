@@ -1,15 +1,21 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.models import Group, Permission, User
 from group.forms import CreateGroupForm, InviteUserToGroupForm
 from group.models import GroupExt, Discussion, Invite
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import MultipleObjectsReturned
+from guardian.shortcuts import assign_perm
 import datetime
 
 
+@login_required()
 def groups(request):
+
+    u = request.user
+    p = u.get_all_permissions()
+
 
     all_groups = GroupExt.objects.all()
     user_groups = request.user.groups.all()
@@ -21,19 +27,23 @@ def groups(request):
 
 
 @login_required()
+@permission_required('auth.add_group', login_url='/groups/')
 def create_group(request):
 
     if request.method == 'POST':
         print(request.FILES)
         form = CreateGroupForm(request.POST, request.FILES)
         if form.is_valid():
-            name = form.cleaned_data.get('name')
-            desc = form.cleaned_data.get('description')
-            g = GroupExt(name=name, description=desc, owner=request.user, avatar=form.cleaned_data.get('avatar'))
-            g.save()
-            gr = GroupExt.objects.get(name=name)
+            group_name = form.cleaned_data.get('name')
+            group_desc = form.cleaned_data.get('description')
+            group_avatar = request.FILES.get('avatar')
+            GroupExt(name=group_name, description=group_desc, owner=request.user, avatar=group_avatar).save()
+
             u = User.objects.get(id=request.user.id)
+            gr = GroupExt.objects.get(name=group_name)
             u.groups.add(gr)
+            assign_perm('group.group_admin', u, gr)
+            assign_perm('group.group_member', u, gr)
             u.save()
 
             return HttpResponseRedirect ('/groups/{}'.format(gr.id))
@@ -49,6 +59,9 @@ def group(request, g_id):
     g = get_object_or_404(GroupExt, id=g_id)
     topics = Discussion.objects.filter(group=g)
     is_admin = request.user == g.owner
+
+    if not request.user.has_perm('group.group_admin', g) or not request.user.has_perm('group.group_member', g):
+        return HttpResponseForbidden('no!')
 
     data = {'g': g, 'dis': topics, 'is_admin': is_admin}
     return render(request, template_name='group.html', context=data)

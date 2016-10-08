@@ -811,7 +811,7 @@ class diff_match_patch:
             pointer -= 1
       pointer += 1
 
-  # Define some regex patterns for matching boundaries.
+  #    Define some regex patterns for matching boundaries.
   BLANKLINEEND = re.compile(r"\n\r?\n$");
   BLANKLINESTART = re.compile(r"^\r?\n\r?\n");
 

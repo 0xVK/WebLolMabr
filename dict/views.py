@@ -43,7 +43,7 @@ def solution(request, id):
 def solutions(request):
 
     user = request.user
-    sols = Solution.objects.filter(author=user)
+    sols = Solution.objects.filter(author=user).order_by('-id')
 
     return render(request, template_name='solutions.html', context={'sols': sols})
 

@@ -1,8 +1,10 @@
-from django.forms import ModelForm, ChoiceField
+from django.forms import ModelForm, ChoiceField, FileField
 from group.models import GroupExt, Invite
 
 
 class CreateGroupForm(ModelForm):
+
+    avatar = FileField(required=False)
 
     class Meta:
         model = GroupExt

@@ -11,11 +11,15 @@ class GroupExt(Group):
 
     description = models.TextField(max_length=255, verbose_name='Опис')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL)
-    avatar = models.ImageField(upload_to='avatars/group', blank=True, verbose_name=u'Аватар')
+    avatar = models.ImageField(blank=True, verbose_name=u'Аватар')
 
     class Meta:
         verbose_name = u'Група'
         verbose_name_plural = u'Групи'
+        permissions = (
+            ('group_member', 'Group member'),
+            ('group_admin', 'Group admin'),
+        )
 
 
 class Invite(models.Model):
